@@ -1,11 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class Oogway {
     private static final String name = "Master Oogway";
-    private static String[] store = new String[100];
-
-    private static int counter = 0;
+    private static final ArrayList<Task> tasks = new ArrayList<>();
 
     private static void horizontalLine() {
         System.out.println("____________________________________________________________");
@@ -24,21 +23,57 @@ public class Oogway {
         horizontalLine();
     }
 
-    public static void addToStore(String msg) {
-        store[counter++] = msg;
+    public static void addTask(String msg) {
+        tasks.add(new Task(msg));
+
         horizontalLine();
         System.out.println("Added: " + msg);
         horizontalLine();
     }
 
-    private static void listFromStore() {
-        if (counter == 0) {
+    private static void listTasks() {
+        horizontalLine();
+        if (tasks.isEmpty()) {
             System.out.println("Ah, it seems you have no tasks yet, young one.");
         } else {
-            IntStream.range(0, counter) // Generate indices from 0 to counter - 1
-                    .mapToObj(index -> (index + 1) + ". " + store[index]) // Format each item with its index
-                    .forEach(System.out::println); // Print each formatted item
+            System.out.println("Here are the tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + "." + tasks.get(i));
+            }
         }
+        horizontalLine();
+    }
+
+    private static void handleMark(String msg) {
+        String[] arr = msg.split(" ");
+        horizontalLine();
+        try {
+            int index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
+            tasks.get(index).setDone();
+            System.out.println("Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:");
+            System.out.println("  " + tasks.get(index));
+        } catch (NumberFormatException e) {
+            System.out.println("Tis not a valid number...");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Ah, young one, that task does not exist.");
+        }
+        horizontalLine();
+    }
+
+    private static void handleUnmark(String msg) {
+        String[] arr = msg.split(" ");
+        horizontalLine();
+        try {
+            int index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
+            tasks.get(index).setUndone();
+            System.out.println("Patience, young one. I have returned this task to its unfinished state:");
+            System.out.println("  " + tasks.get(index));
+        } catch (NumberFormatException e) {
+            System.out.println("Tis not a valid number...");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Ah, young one, that task does not exist.");
+        }
+        horizontalLine();
     }
 
     public static void main(String[] args) {
@@ -53,14 +88,15 @@ public class Oogway {
 
             if (msg.equals("bye")) {
                 break;
+            } else if (msg.equals("list")) {
+                listTasks();
+            } else if (msg.startsWith("mark ")) {
+                handleMark(msg);
+            } else if (msg.startsWith("unmark ")) {
+                handleUnmark(msg);
+            } else {
+                addTask(msg);
             }
-
-            if (msg.equals("list")) {
-                listFromStore();
-                continue;
-            }
-
-            addToStore(msg);
         }
 
         // Exit
