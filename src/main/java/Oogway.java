@@ -1,7 +1,11 @@
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Oogway {
     private static final String name = "Master Oogway";
+    private static String[] store = new String[100];
+
+    private static int counter = 0;
 
     private static void horizontalLine() {
         System.out.println("____________________________________________________________");
@@ -20,6 +24,23 @@ public class Oogway {
         horizontalLine();
     }
 
+    public static void addToStore(String msg) {
+        store[counter++] = msg;
+        horizontalLine();
+        System.out.println("Added: " + msg);
+        horizontalLine();
+    }
+
+    private static void listFromStore() {
+        if (counter == 0) {
+            System.out.println("Ah, it seems you have no tasks yet, young one.");
+        } else {
+            IntStream.range(0, counter) // Generate indices from 0 to counter - 1
+                    .mapToObj(index -> (index + 1) + ". " + store[index]) // Format each item with its index
+                    .forEach(System.out::println); // Print each formatted item
+        }
+    }
+
     public static void main(String[] args) {
         // Introduction
         introductionMessage();
@@ -34,10 +55,12 @@ public class Oogway {
                 break;
             }
 
-            // Echo
-            horizontalLine();
-            System.out.println(msg);
-            horizontalLine();
+            if (msg.equals("list")) {
+                listFromStore();
+                continue;
+            }
+
+            addToStore(msg);
         }
 
         // Exit
