@@ -1,36 +1,59 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class Oogway {
-    private static final String name = "Master Oogway";
+    private static final String NAME = "Master Oogway";
     private static final ArrayList<Task> tasks = new ArrayList<>();
 
+    /**
+     * Prints a horizontal line.
+     */
     private static void horizontalLine() {
         System.out.println("____________________________________________________________");
     }
 
-    public static void introductionMessage() {
+    /**
+     * Prints the introduction message.
+     */
+    private static void introductionMessage() {
         horizontalLine();
-        System.out.println("Greetings, young one. I am " + name + ".\nEnlighten me... What do you seek?");
+        System.out.println("Greetings, young one. I am " + NAME + ".");
+        System.out.println("Enlighten me... What do you seek?");
         horizontalLine();
     }
 
-    public static void exitMessage() {
+    /**
+     * Prints the exit message.
+     */
+    private static void exitMessage() {
         horizontalLine();
         System.out.println("Farewell, young one. I hope to guide you again someday.");
         System.out.println("And never forget... Yesterday is history, Tomorrow is a mystery, but Today is a gift. That is why it is called the present.");
         horizontalLine();
     }
 
-    public static void addTask(String msg) {
-        tasks.add(new Task(msg));
+    /**
+     * Adds a task to the task list.
+     * @param description the input string containing the task description
+     */
+    private static void addTask(String description) {
+        // Checks if string is empty
+        if (description == null || description.trim().isEmpty()) {
+            horizontalLine();
+            System.out.println("Ah, young one, tasks cannot be empty.");
+            horizontalLine();
+            return;
+        }
+        tasks.add(new Task(description));
 
         horizontalLine();
-        System.out.println("Added: " + msg);
+        System.out.println("Added: " + description);
         horizontalLine();
     }
 
+    /**
+     * Lists all tasks in the task list.
+     */
     private static void listTasks() {
         horizontalLine();
         if (tasks.isEmpty()) {
@@ -44,8 +67,12 @@ public class Oogway {
         horizontalLine();
     }
 
-    private static void handleMark(String msg) {
-        String[] arr = msg.split(" ");
+    /**
+     * Marks a task as done based on the user's input.
+     * @param userInput the input string containing the task index
+     */
+    private static void handleMark(String userInput) {
+        String[] arr = userInput.split(" ");
         horizontalLine();
         try {
             int index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
@@ -60,8 +87,12 @@ public class Oogway {
         horizontalLine();
     }
 
-    private static void handleUnmark(String msg) {
-        String[] arr = msg.split(" ");
+    /**
+     * Marks a task as undone based on the user's input.
+     * @param userInput the input string containing the task index
+     */
+    private static void handleUnmark(String userInput) {
+        String[] arr = userInput.split(" ");
         horizontalLine();
         try {
             int index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
@@ -84,18 +115,18 @@ public class Oogway {
         Scanner sc = new Scanner(System.in);
 
         while (sc.hasNextLine()) {
-            String msg = sc.nextLine();
+            String userInput = sc.nextLine();
 
-            if (msg.equals("bye")) {
+            if (userInput.equals("bye")) {
                 break;
-            } else if (msg.equals("list")) {
+            } else if (userInput.equals("list")) {
                 listTasks();
-            } else if (msg.startsWith("mark ")) {
-                handleMark(msg);
-            } else if (msg.startsWith("unmark ")) {
-                handleUnmark(msg);
+            } else if (userInput.startsWith("mark ")) {
+                handleMark(userInput);
+            } else if (userInput.startsWith("unmark ")) {
+                handleUnmark(userInput);
             } else {
-                addTask(msg);
+                addTask(userInput);
             }
         }
 
