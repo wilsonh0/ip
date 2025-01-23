@@ -40,35 +40,55 @@ public class Oogway {
      */
     private static void addTask(String taskType, String userInput) {
         // Checks if string is empty
-        if (userInput == null || userInput.trim().isEmpty()) {
-            wrapMessage("Ah, young one, tasks cannot be empty.");
-            return;
-        }
+        try {
+            if (userInput == null || userInput.trim().isEmpty()) {
+                throw new OogwayException("Ah, young one, tasks cannot be empty.");
+            }
 
-        Task task = null;
-        String taskDescription = userInput.split(" ", 2)[1];
+            String[] arr = userInput.split(" ", 2);
+
+            if (arr.length < 2) {
+                throw new OogwayException("Ah, young one, you seem to be missing a task description.");
+            }
+
+            Task task = getTask(taskType, arr);
+
+            tasks.add(task);
+            String message = "Alright, I have noted down the task:\n  "
+                    + task + "\nNow you have " + tasks.size() + " tasks in the list.";
+            wrapMessage(message);
+
+        } catch (OogwayException e) {
+            wrapMessage(e.getMessage());
+        }
+    }
+
+    private static Task getTask(String taskType, String[] arr) throws OogwayException {
+        Task task;
+        String taskDescription = arr[1];
 
         switch (taskType) {
             case "todo" -> task = new ToDo(taskDescription);
             case "deadline" -> {
                 String[] splitBySlash = taskDescription.split(" /by ", 2);
+
+                if (splitBySlash.length < 2) {
+                    throw new OogwayException("Ah, young one, a deadline must include /by followed by the due date.");
+                }
                 task = new Deadline(splitBySlash[0], splitBySlash[1]);
 
             }
             case "event" -> {
                 String[] splitBySlash = taskDescription.split(" /from | /to ", 3);
+
+                if (splitBySlash.length < 3) {
+                    throw new OogwayException("Ah, young one, an event must include /from and /to timings.");
+                }
                 task = new Event(splitBySlash[0], splitBySlash[1], splitBySlash[2]);
             }
+            default -> throw new OogwayException("Ah, young one, I do not understand that command.");
         }
-
-        if (task != null) {
-            tasks.add(task);
-
-            String message = "Alright, I have noted down the task:\n  "
-                    + task + "\nNow you have " + tasks.size() + " tasks in the list.";
-
-            wrapMessage(message);
-        }
+        return task;
     }
 
     /**
@@ -91,21 +111,32 @@ public class Oogway {
      * @param userInput the input string containing the task index
      */
     private static void handleMark(String userInput) {
-        String[] arr = userInput.split(" ");
-        String message;
-
         try {
-            int index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
-            tasks.get(index).setDone();
-            message = "Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:\n";
-            message += "  " + tasks.get(index);
-        } catch (NumberFormatException e) {
-            message = "Tis not a valid number...";
-        } catch (IndexOutOfBoundsException e) {
-            message = "Ah, young one, that task does not exist.";
-        }
+            String[] arr = userInput.split(" ");
+            if (arr.length < 2) {
+                throw new OogwayException("Ah, young one, you must specify a task number.");
+            }
 
-        wrapMessage(message);
+            int index;
+            try {
+                index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
+            } catch (NumberFormatException e) {
+                throw new OogwayException("Ah, young one, that is not a valid number.");
+            }
+
+            if (index < 0 || index >= tasks.size()) {
+                throw new OogwayException("Ah, young one, that task does not exist.");
+            }
+
+            tasks.get(index).setDone();
+            String message = "Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:\n"
+                    + "  " + tasks.get(index);
+
+            wrapMessage(message);
+
+        } catch (OogwayException e) {
+            wrapMessage(e.getMessage());
+        }
     }
 
     /**
@@ -113,21 +144,32 @@ public class Oogway {
      * @param userInput the input string containing the task index
      */
     private static void handleUnmark(String userInput) {
-        String[] arr = userInput.split(" ");
-        String message;
-
         try {
-            int index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
-            tasks.get(index).setUndone();
-            message = "Patience, young one. I have returned this task to its unfinished state:\n";
-            message += "  " + tasks.get(index);
-        } catch (NumberFormatException e) {
-            message = "Tis not a valid number...";
-        } catch (IndexOutOfBoundsException e) {
-            message = "Ah, young one, that task does not exist.";
-        }
+            String[] arr = userInput.split(" ");
+            if (arr.length < 2) {
+                throw new OogwayException("Ah, young one, you must specify a task number.");
+            }
 
-        wrapMessage(message);
+            int index;
+            try {
+                index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
+            } catch (NumberFormatException e) {
+                throw new OogwayException("Ah, young one, that is not a valid number.");
+            }
+
+            if (index < 0 || index >= tasks.size()) {
+                throw new OogwayException("Ah, young one, that task does not exist.");
+            }
+
+            tasks.get(index).setUndone();
+            String message = "Patience, young one. I have returned this task to its unfinished state:\n"
+                    + "  " + tasks.get(index);
+
+            wrapMessage(message);
+
+        } catch (OogwayException e) {
+            wrapMessage(e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
