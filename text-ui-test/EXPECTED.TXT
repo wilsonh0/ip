@@ -1,7 +1,49 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+____________________________________________________________
+Greetings, young one. I am Master Oogway.
+ Enlighten me... What do you seek?
+____________________________________________________________
+____________________________________________________________
+Alright, I have noted down the task:
+  [T][ ] borrow book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Alright, I have noted down the task:
+  [D][ ] return book (by: Aug 30th)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Alright, I have noted down the task:
+  [E][ ] project meeting (From: Aug 10th 3pm to: 5pm)
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] borrow book
+2.[D][ ] return book (by: Aug 30th)
+3.[E][ ] project meeting (From: Aug 10th 3pm to: 5pm)
 
+____________________________________________________________
+____________________________________________________________
+Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:
+  [T][X] borrow book
+____________________________________________________________
+____________________________________________________________
+Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:
+  [D][X] return book (by: Aug 30th)
+____________________________________________________________
+____________________________________________________________
+Patience, young one. I have returned this task to its unfinished state:
+  [T][ ] borrow book
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] borrow book
+2.[D][X] return book (by: Aug 30th)
+3.[E][ ] project meeting (From: Aug 10th 3pm to: 5pm)
+
+____________________________________________________________
+____________________________________________________________
+Farewell, young one. I hope to guide you again someday.
+And never forget... Yesterday is history, Tomorrow is a mystery, but Today is a gift. That is why it is called the present.
+____________________________________________________________
