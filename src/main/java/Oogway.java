@@ -8,14 +8,16 @@ public class Oogway {
     private static final String LINE = "____________________________________________________________";
 
     /**
-     * Wraps message with horizontal lines.
+     * Prints a message wrapped with horizontal lines.
+     *
+     * @param message The message to be wrapped and printed.
      */
     private static void wrapMessage(String message) {
         System.out.printf("%s\n%s\n%s%n", Oogway.LINE, message, Oogway.LINE);
     }
 
     /**
-     * Prints the introduction message.
+     * Prints the introduction message when the program starts.
      */
     private static void introductionMessage() {
         String message = "Greetings, young one. I am " + NAME + ".\n Enlighten me... What do you seek?";
@@ -24,7 +26,7 @@ public class Oogway {
     }
 
     /**
-     * Prints the exit message.
+     * Prints the farewell message when the program exits.
      */
     private static void exitMessage() {
         String message = "Farewell, young one. I hope to guide you again someday.\n"
@@ -35,8 +37,10 @@ public class Oogway {
     }
 
     /**
-     * Adds a task to the task list.
-     * @param userInput the input string containing the task description
+     * Adds a task to the task list based on the provided task type and user input.
+     *
+     * @param taskType The type of task to add ("todo", "deadline", or "event").
+     * @param userInput The full user input containing the task description.
      */
     private static void addTask(String taskType, String userInput) {
         // Checks if string is empty
@@ -63,6 +67,17 @@ public class Oogway {
         }
     }
 
+    /**
+     * Creates a Task object based on the specified task type and input array.
+     *
+     * @param taskType The type of task to create ("todo", "deadline", or "event").
+     * @param arr An array of strings where the second element contains the task description.
+     * @return The created Task object.
+     * @throws OogwayException If the task type is invalid or the input does not meet the required format for the task type.
+     *                         For example:
+     *                         - A "deadline" task requires "/by" followed by a due date.
+     *                         - An "event" task requires "/from" and "/to" timings.
+     */
     private static Task getTask(String taskType, String[] arr) throws OogwayException {
         Task task;
         String taskDescription = arr[1];
@@ -91,6 +106,11 @@ public class Oogway {
         return task;
     }
 
+    /**
+     * Deletes a task from the task list based on the user input.
+     *
+     * @param userInput The input string containing the command and the task index (e.g., "delete 2").
+     */
     private static void deleteTask(String userInput) {
         try {
             String[] arr = userInput.split(" ");
@@ -121,7 +141,7 @@ public class Oogway {
     }
 
     /**
-     * Lists all tasks in the task list.
+     * Lists all tasks in the task list. If the list is empty, displays an appropriate message.
      */
     private static void listTasks() {
         if (tasks.isEmpty()) {
@@ -136,8 +156,9 @@ public class Oogway {
     }
 
     /**
-     * Marks a task as done based on the user's input.
-     * @param userInput the input string containing the task index
+     * Marks a task as done based on the user input.
+     *
+     * @param userInput The command input containing the task index (e.g., "mark 2").
      */
     private static void markTask(String userInput) {
         try {
@@ -169,8 +190,9 @@ public class Oogway {
     }
 
     /**
-     * Marks a task as undone based on the user's input.
-     * @param userInput the input string containing the task index
+     * Marks a task as not done based on the user input.
+     *
+     * @param userInput The command input containing the task index (e.g., "unmark 2").
      */
     private static void unmarkTask(String userInput) {
         try {
