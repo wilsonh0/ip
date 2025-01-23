@@ -91,6 +91,35 @@ public class Oogway {
         return task;
     }
 
+    private static void deleteTask(String userInput) {
+        try {
+            String[] arr = userInput.split(" ");
+            if (arr.length < 2) {
+                throw new OogwayException("Ah, young one, you must specify a task number.");
+            }
+
+            int index;
+            try {
+                index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
+            } catch (NumberFormatException e) {
+                throw new OogwayException("Ah, young one, that is not a valid number.");
+            }
+
+            if (index < 0 || index >= tasks.size()) {
+                throw new OogwayException("Ah, young one, that task does not exist.");
+            }
+
+            Task task = tasks.remove(index);
+            String message = "Alright, I have removed the task:\n  "
+                    + task + "\nNow you have " + tasks.size() + " tasks in the list.";
+
+            wrapMessage(message);
+
+        } catch (OogwayException e) {
+            wrapMessage(e.getMessage());
+        }
+    }
+
     /**
      * Lists all tasks in the task list.
      */
@@ -110,7 +139,7 @@ public class Oogway {
      * Marks a task as done based on the user's input.
      * @param userInput the input string containing the task index
      */
-    private static void handleMark(String userInput) {
+    private static void markTask(String userInput) {
         try {
             String[] arr = userInput.split(" ");
             if (arr.length < 2) {
@@ -143,7 +172,7 @@ public class Oogway {
      * Marks a task as undone based on the user's input.
      * @param userInput the input string containing the task index
      */
-    private static void handleUnmark(String userInput) {
+    private static void unmarkTask(String userInput) {
         try {
             String[] arr = userInput.split(" ");
             if (arr.length < 2) {
@@ -191,10 +220,13 @@ public class Oogway {
                     listTasks();
                     break;
                 case "mark":
-                    handleMark(userInput);
+                    markTask(userInput);
                     break;
                 case "unmark":
-                    handleUnmark(userInput);
+                    unmarkTask(userInput);
+                    break;
+                case "delete":
+                    deleteTask(userInput);
                     break;
                 default:
                     addTask(firstWord, userInput);
@@ -205,4 +237,6 @@ public class Oogway {
         // Exit
         exitMessage();
     }
+
+
 }
