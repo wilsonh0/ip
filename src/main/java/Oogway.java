@@ -1,10 +1,9 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Oogway {
     private static final String NAME = "Master Oogway";
-    private static final ArrayList<Task> tasks = new ArrayList<>();
-
+    private static final Storage storage = new Storage();
+    private static final FileHandler fileHandler = new FileHandler();
     private static final String LINE = "____________________________________________________________";
 
     /**
@@ -57,9 +56,11 @@ public class Oogway {
 
             Task task = getTask(taskType, arr);
 
-            tasks.add(task);
+            storage.addTask(task);
+            fileHandler.saveToFile(storage);
+
             String message = "Alright, I have noted down the task:\n  "
-                    + task + "\nNow you have " + tasks.size() + " tasks in the list.";
+                    + task + "\nNow you have " + storage.getTaskCount() + " tasks in the list.";
             wrapMessage(message);
 
         } catch (OogwayException e) {
@@ -83,14 +84,14 @@ public class Oogway {
         String taskDescription = arr[1];
 
         switch (taskType) {
-            case "todo" -> task = new ToDo(taskDescription);
+            case "todo" -> task = new ToDo(taskDescription, false);
             case "deadline" -> {
                 String[] splitBySlash = taskDescription.split(" /by ", 2);
 
                 if (splitBySlash.length < 2) {
                     throw new OogwayException("Ah, young one, a deadline must include /by followed by the due date.");
                 }
-                task = new Deadline(splitBySlash[0], splitBySlash[1]);
+                task = new Deadline(splitBySlash[0], false, splitBySlash[1]);
 
             }
             case "event" -> {
@@ -99,12 +100,77 @@ public class Oogway {
                 if (splitBySlash.length < 3) {
                     throw new OogwayException("Ah, young one, an event must include /from and /to timings.");
                 }
-                task = new Event(splitBySlash[0], splitBySlash[1], splitBySlash[2]);
+                task = new Event(splitBySlash[0], false, splitBySlash[1], splitBySlash[2]);
             }
             default -> throw new OogwayException("Ah, young one, I do not understand that command.");
         }
         return task;
     }
+
+
+    /**
+     * Lists all tasks in the task list. If the list is empty, displays an appropriate message.
+     */
+    private static void listTasks() {
+        if (storage.isEmpty()) {
+            wrapMessage("Ah, it seems you have no tasks yet, young one.");
+        } else {
+            StringBuilder message = new StringBuilder("Here are the tasks in your list:\n");
+            for (int i = 0; i < storage.getTaskCount(); i++) {
+                message.append(((i + 1))).append(".").append(storage.getTask(i)).append("\n");
+            }
+            wrapMessage(message.toString());
+        }
+    }
+
+    private static int extractTaskIndex(String userInput) throws OogwayException {
+        String[] arr = userInput.split(" ");
+        if (arr.length < 2) {
+            throw new OogwayException("Ah, young one, you must specify a task number.");
+        }
+
+        int index;
+        try {
+            index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
+        } catch (NumberFormatException e) {
+            throw new OogwayException("Ah, young one, that is not a valid number.");
+        }
+
+        if (index < 0 || index >= storage.getTaskCount()) {
+            throw new OogwayException("Ah, young one, that task does not exist.");
+        }
+
+        return index;
+    }
+
+    /**
+     * Marks a task as done or undone based on the user input.
+     *
+     * @param userInput The command input containing the task index (e.g., "mark 2").
+     */
+    private static void markTask(String userInput, boolean done) {
+        try {
+            int index = extractTaskIndex(userInput);
+
+            storage.getTask(index).setDone(done);
+            fileHandler.saveToFile(storage);
+
+            String message;
+            if (done) {
+                message = "Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:\n"
+                        + "  " + storage.getTask(index);
+            } else {
+                message = "Patience, young one. I have returned this task to its unfinished state:\n"
+                        + "  " + storage.getTask(index);
+            }
+
+            wrapMessage(message);
+
+        } catch (OogwayException e) {
+            wrapMessage(e.getMessage());
+        }
+    }
+
 
     /**
      * Deletes a task from the task list based on the user input.
@@ -113,108 +179,13 @@ public class Oogway {
      */
     private static void deleteTask(String userInput) {
         try {
-            String[] arr = userInput.split(" ");
-            if (arr.length < 2) {
-                throw new OogwayException("Ah, young one, you must specify a task number.");
-            }
+            int index = extractTaskIndex(userInput);
 
-            int index;
-            try {
-                index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
-            } catch (NumberFormatException e) {
-                throw new OogwayException("Ah, young one, that is not a valid number.");
-            }
+            Task task = storage.deleteTask(index);
+            fileHandler.saveToFile(storage);
 
-            if (index < 0 || index >= tasks.size()) {
-                throw new OogwayException("Ah, young one, that task does not exist.");
-            }
-
-            Task task = tasks.remove(index);
             String message = "Alright, I have removed the task:\n  "
-                    + task + "\nNow you have " + tasks.size() + " tasks in the list.";
-
-            wrapMessage(message);
-
-        } catch (OogwayException e) {
-            wrapMessage(e.getMessage());
-        }
-    }
-
-    /**
-     * Lists all tasks in the task list. If the list is empty, displays an appropriate message.
-     */
-    private static void listTasks() {
-        if (tasks.isEmpty()) {
-            wrapMessage("Ah, it seems you have no tasks yet, young one.");
-        } else {
-            StringBuilder message = new StringBuilder("Here are the tasks in your list:\n");
-            for (int i = 0; i < tasks.size(); i++) {
-                message.append(((i + 1))).append(".").append(tasks.get(i)).append("\n");
-            }
-            wrapMessage(String.valueOf(message.toString()));
-        }
-    }
-
-    /**
-     * Marks a task as done based on the user input.
-     *
-     * @param userInput The command input containing the task index (e.g., "mark 2").
-     */
-    private static void markTask(String userInput) {
-        try {
-            String[] arr = userInput.split(" ");
-            if (arr.length < 2) {
-                throw new OogwayException("Ah, young one, you must specify a task number.");
-            }
-
-            int index;
-            try {
-                index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
-            } catch (NumberFormatException e) {
-                throw new OogwayException("Ah, young one, that is not a valid number.");
-            }
-
-            if (index < 0 || index >= tasks.size()) {
-                throw new OogwayException("Ah, young one, that task does not exist.");
-            }
-
-            tasks.get(index).setDone();
-            String message = "Ah, young one, it brings me great joy to see progress. I have marked this task as complete for you:\n"
-                    + "  " + tasks.get(index);
-
-            wrapMessage(message);
-
-        } catch (OogwayException e) {
-            wrapMessage(e.getMessage());
-        }
-    }
-
-    /**
-     * Marks a task as not done based on the user input.
-     *
-     * @param userInput The command input containing the task index (e.g., "unmark 2").
-     */
-    private static void unmarkTask(String userInput) {
-        try {
-            String[] arr = userInput.split(" ");
-            if (arr.length < 2) {
-                throw new OogwayException("Ah, young one, you must specify a task number.");
-            }
-
-            int index;
-            try {
-                index = Integer.parseInt(arr[1]) - 1; // Convert to zero-based index
-            } catch (NumberFormatException e) {
-                throw new OogwayException("Ah, young one, that is not a valid number.");
-            }
-
-            if (index < 0 || index >= tasks.size()) {
-                throw new OogwayException("Ah, young one, that task does not exist.");
-            }
-
-            tasks.get(index).setUndone();
-            String message = "Patience, young one. I have returned this task to its unfinished state:\n"
-                    + "  " + tasks.get(index);
+                    + task + "\nNow you have " + storage.getTaskCount() + " tasks in the list.";
 
             wrapMessage(message);
 
@@ -242,10 +213,10 @@ public class Oogway {
                     listTasks();
                     break;
                 case "mark":
-                    markTask(userInput);
+                    markTask(userInput, true);
                     break;
                 case "unmark":
-                    unmarkTask(userInput);
+                    markTask(userInput, false);
                     break;
                 case "delete":
                     deleteTask(userInput);
@@ -259,6 +230,4 @@ public class Oogway {
         // Exit
         exitMessage();
     }
-
-
 }
