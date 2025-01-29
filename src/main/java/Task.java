@@ -1,27 +1,33 @@
-public class Task {
+public abstract class Task {
 
     protected String description;
     protected boolean isDone;
 
-    public Task(String description) {
+    public Task(String description, boolean isDone) {
         this.description = description;
-        this.isDone = false;
+        this.isDone = isDone;
+    }
+
+    public abstract String getTaskType();
+
+    public String getDescription() {
+        return description;
     }
 
     public String getStatusIcon() {
-        return (this.isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "X" : " "); // mark done task with X
     }
 
-    public void setDone() {
-        this.isDone = true;
+    public void setDone(boolean isDone) {
+        this.isDone = isDone;
     }
 
-    public void setUndone() {
-        this.isDone = false;
+    public String toSaveFormat() {
+        return String.format("%s | %s | %s", getTaskType(), isDone ? "1" : "0", description);
     }
 
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return String.format("[%s][%s] %s", getTaskType(), getStatusIcon(), description);
     }
 }
