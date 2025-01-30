@@ -1,12 +1,29 @@
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class Event extends Task {
 
-    protected String startDateTime;
-    protected String endDateTime;
+    protected LocalDateTime startDateTime;
+    protected LocalDateTime endDateTime;
 
-    public Event(String description, boolean isDone, String startDateTime, String endDateTime) {
+    protected DateTimeFormatter startDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    protected DateTimeFormatter endDateFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+    protected DateTimeFormatter outputStartDateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy (hh:mm a");
+    protected DateTimeFormatter outputEndDateFormatter = DateTimeFormatter.ofPattern("hh:mm a)");
+
+    public Event(String description, boolean isDone, String startDateTimeString, String endTimeString) {
         super(description, isDone);
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+
+        try {
+            this.startDateTime = LocalDateTime.parse(startDateTimeString, startDateFormatter);
+
+            LocalTime endTime = LocalTime.parse(endTimeString, endDateFormatter);
+            this.endDateTime = startDateTime.toLocalDate().atTime(endTime);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date. Follow this format: [yyyy-MM-dd HHmm]");
+        }
     }
 
     @Override
@@ -14,21 +31,23 @@ public class Event extends Task {
         return "E";
     }
 
-    public String getStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public String getEndDateTime() {
+    public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
     @Override
     public String toSaveFormat() {
-        return String.format("%s | %s | %s", super.toSaveFormat(), startDateTime, endDateTime);
+        return String.format("%s | %s | %s", super.toSaveFormat(), startDateTime.format(startDateFormatter),
+                        endDateTime.format(endDateFormatter));
     }
 
     @Override
     public String toString() {
-        return String.format("%s (at: %s to %s)", super.toString(), startDateTime, endDateTime);
+        return String.format("%s (at: %s to %s)", super.toString(), startDateTime.format(outputStartDateFormatter),
+                endDateTime.format(outputEndDateFormatter));
     }
 }
