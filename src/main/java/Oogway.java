@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Oogway {
     private static final String NAME = "Master Oogway";
-    private static final Storage storage = new Storage();
+    private static Storage storage = new Storage();
     private static final FileHandler fileHandler = new FileHandler();
     private static final String LINE = "____________________________________________________________";
 
@@ -91,7 +91,12 @@ public class Oogway {
                 if (splitBySlash.length < 2) {
                     throw new OogwayException("Ah, young one, a deadline must include /by followed by the due date.");
                 }
-                task = new Deadline(splitBySlash[0], false, splitBySlash[1]);
+
+                try {
+                    task = new Deadline(splitBySlash[0], false, splitBySlash[1]);
+                } catch (Exception e) {
+                    throw new OogwayException(("Invalid date. Follow this format: [yyyy-MM-dd HHmm]"));
+                }
 
             }
             case "event" -> {
@@ -100,7 +105,12 @@ public class Oogway {
                 if (splitBySlash.length < 3) {
                     throw new OogwayException("Ah, young one, an event must include /from and /to timings.");
                 }
-                task = new Event(splitBySlash[0], false, splitBySlash[1], splitBySlash[2]);
+                try {
+                    task = new Event(splitBySlash[0], false, splitBySlash[1], splitBySlash[2]);
+                } catch (Exception e) {
+                    throw new OogwayException(("Invalid date. Follow this format: /from [yyyy-MM-dd HHmm] /to [HHmm]"));
+                }
+
             }
             default -> throw new OogwayException("Ah, young one, I do not understand that command.");
         }
@@ -195,6 +205,9 @@ public class Oogway {
     }
 
     public static void main(String[] args) {
+        // Load from save file
+        storage = fileHandler.loadFromFile();
+
         // Introduction
         introductionMessage();
 
