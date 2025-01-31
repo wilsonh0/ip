@@ -1,38 +1,63 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Oogway {
-    private static final String NAME = "Master Oogway";
-    private static Storage storage = new Storage();
-    private static final FileHandler fileHandler = new FileHandler();
-    private static final String LINE = "____________________________________________________________";
+    private FileHandler fileHandler;
+    private Storage storage;
+    private Ui ui;
 
-    /**
-     * Prints a message wrapped with horizontal lines.
-     *
-     * @param message The message to be wrapped and printed.
-     */
-    private static void wrapMessage(String message) {
-        System.out.printf("%s\n%s\n%s%n", Oogway.LINE, message, Oogway.LINE);
+    public Oogway(String filePath) {
+        ui = new Ui();
+
+        try {
+            fileHandler = new FileHandler(filePath);
+            storage = fileHandler.loadFromFile();
+        } catch (IOException e) {
+            ui.loadErrorMessage(e.getMessage());
+            storage = new Storage();
+        }
+
+
     }
 
-    /**
-     * Prints the introduction message when the program starts.
-     */
-    private static void introductionMessage() {
-        String message = "Greetings, young one. I am " + NAME + ".\n Enlighten me... What do you seek?";
+    public void run() {
+        ui.introductionMessage();
 
-        wrapMessage(message);
+        // Read user input
+        Scanner sc = new Scanner(System.in);
+
+        while (sc.hasNextLine()) {
+            String userInput = sc.nextLine();
+            String firstWord = userInput.split(" ")[0];
+
+            switch (firstWord) {
+                case "bye":
+                    break;
+                case "list":
+                    listTasks();
+                    break;
+                case "mark":
+                    markTask(userInput, true);
+                    break;
+                case "unmark":
+                    markTask(userInput, false);
+                    break;
+                case "delete":
+                    deleteTask(userInput);
+                    break;
+                default:
+                    addTask(firstWord, userInput);
+                    break;
+            }
+        }
+
+        // Exit
+        ui.exitMessage();
+
     }
 
-    /**
-     * Prints the farewell message when the program exits.
-     */
-    private static void exitMessage() {
-        String message = "Farewell, young one. I hope to guide you again someday.\n"
-                + "And never forget... Yesterday is history, Tomorrow is a mystery, but Today is a gift. "
-                + "That is why it is called the present.";
-
-        wrapMessage(message);
+    public static void main(String[] args) {
+        new Oogway(null).run();
     }
 
     /**
@@ -41,7 +66,7 @@ public class Oogway {
      * @param taskType The type of task to add ("todo", "deadline", or "event").
      * @param userInput The full user input containing the task description.
      */
-    private static void addTask(String taskType, String userInput) {
+    private void addTask(String taskType, String userInput) {
         // Checks if string is empty
         try {
             if (userInput == null || userInput.trim().isEmpty()) {
@@ -57,14 +82,19 @@ public class Oogway {
             Task task = getTask(taskType, arr);
 
             storage.addTask(task);
-            fileHandler.saveToFile(storage);
+
+            try {
+                fileHandler.saveToFile(storage);
+            } catch (IOException e) {
+                ui.saveErrorMessage(e.getMessage());
+            }
 
             String message = "Alright, I have noted down the task:\n  "
                     + task + "\nNow you have " + storage.getTaskCount() + " tasks in the list.";
-            wrapMessage(message);
+            ui.wrapMessage(message);
 
         } catch (OogwayException e) {
-            wrapMessage(e.getMessage());
+            ui.wrapMessage(e.getMessage());
         }
     }
 
@@ -79,7 +109,7 @@ public class Oogway {
      *                         - A "deadline" task requires "/by" followed by a due date.
      *                         - An "event" task requires "/from" and "/to" timings.
      */
-    private static Task getTask(String taskType, String[] arr) throws OogwayException {
+    private Task getTask(String taskType, String[] arr) throws OogwayException {
         Task task;
         String taskDescription = arr[1];
 
@@ -121,19 +151,19 @@ public class Oogway {
     /**
      * Lists all tasks in the task list. If the list is empty, displays an appropriate message.
      */
-    private static void listTasks() {
+    private void listTasks() {
         if (storage.isEmpty()) {
-            wrapMessage("Ah, it seems you have no tasks yet, young one.");
+            ui.wrapMessage("Ah, it seems you have no tasks yet, young one.");
         } else {
             StringBuilder message = new StringBuilder("Here are the tasks in your list:\n");
             for (int i = 0; i < storage.getTaskCount(); i++) {
                 message.append(((i + 1))).append(".").append(storage.getTask(i)).append("\n");
             }
-            wrapMessage(message.toString());
+            ui.wrapMessage(message.toString());
         }
     }
 
-    private static int extractTaskIndex(String userInput) throws OogwayException {
+    private int extractTaskIndex(String userInput) throws OogwayException {
         String[] arr = userInput.split(" ");
         if (arr.length < 2) {
             throw new OogwayException("Ah, young one, you must specify a task number.");
@@ -158,12 +188,17 @@ public class Oogway {
      *
      * @param userInput The command input containing the task index (e.g., "mark 2").
      */
-    private static void markTask(String userInput, boolean done) {
+    private void markTask(String userInput, boolean done) {
         try {
             int index = extractTaskIndex(userInput);
 
             storage.getTask(index).setDone(done);
-            fileHandler.saveToFile(storage);
+
+            try {
+                fileHandler.saveToFile(storage);
+            } catch (IOException e) {
+                ui.saveErrorMessage(e.getMessage());
+            }
 
             String message;
             if (done) {
@@ -174,10 +209,10 @@ public class Oogway {
                         + "  " + storage.getTask(index);
             }
 
-            wrapMessage(message);
+            ui.wrapMessage(message);
 
         } catch (OogwayException e) {
-            wrapMessage(e.getMessage());
+            ui.wrapMessage(e.getMessage());
         }
     }
 
@@ -187,60 +222,25 @@ public class Oogway {
      *
      * @param userInput The input string containing the command and the task index (e.g., "delete 2").
      */
-    private static void deleteTask(String userInput) {
+    private void deleteTask(String userInput) {
         try {
             int index = extractTaskIndex(userInput);
 
             Task task = storage.deleteTask(index);
-            fileHandler.saveToFile(storage);
+
+            try {
+                fileHandler.saveToFile(storage);
+            } catch (IOException e) {
+                ui.saveErrorMessage(e.getMessage());
+            }
 
             String message = "Alright, I have removed the task:\n  "
                     + task + "\nNow you have " + storage.getTaskCount() + " tasks in the list.";
 
-            wrapMessage(message);
+            ui.wrapMessage(message);
 
         } catch (OogwayException e) {
-            wrapMessage(e.getMessage());
+            ui.wrapMessage(e.getMessage());
         }
-    }
-
-    public static void main(String[] args) {
-        // Load from save file
-        storage = fileHandler.loadFromFile();
-
-        // Introduction
-        introductionMessage();
-
-        // Read user input
-        Scanner sc = new Scanner(System.in);
-
-        label:
-        while (sc.hasNextLine()) {
-            String userInput = sc.nextLine();
-            String firstWord = userInput.split(" ")[0];
-
-            switch (firstWord) {
-                case "bye":
-                    break label;
-                case "list":
-                    listTasks();
-                    break;
-                case "mark":
-                    markTask(userInput, true);
-                    break;
-                case "unmark":
-                    markTask(userInput, false);
-                    break;
-                case "delete":
-                    deleteTask(userInput);
-                    break;
-                default:
-                    addTask(firstWord, userInput);
-                    break;
-            }
-        }
-
-        // Exit
-        exitMessage();
     }
 }
