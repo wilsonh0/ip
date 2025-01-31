@@ -1,3 +1,7 @@
+package oogway.storage;
+
+import oogway.tasks.Task;
+
 import java.util.ArrayList;
 
 public class Storage {

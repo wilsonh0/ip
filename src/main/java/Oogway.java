@@ -1,6 +1,16 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+import oogway.exception.OogwayException;
+import oogway.storage.FileHandler;
+import oogway.storage.Storage;
+import oogway.tasks.Deadline;
+import oogway.tasks.Event;
+import oogway.tasks.Task;
+import oogway.tasks.ToDo;
+import oogway.ui.Ui;
+
+
 public class Oogway {
     private FileHandler fileHandler;
     private Storage storage;
@@ -26,13 +36,14 @@ public class Oogway {
         // Read user input
         Scanner sc = new Scanner(System.in);
 
+        label:
         while (sc.hasNextLine()) {
             String userInput = sc.nextLine();
             String firstWord = userInput.split(" ")[0];
 
             switch (firstWord) {
                 case "bye":
-                    break;
+                    break label;
                 case "list":
                     listTasks();
                     break;

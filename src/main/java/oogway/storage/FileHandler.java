@@ -1,3 +1,10 @@
+package oogway.storage;
+
+import oogway.tasks.Deadline;
+import oogway.tasks.Event;
+import oogway.tasks.Task;
+import oogway.tasks.ToDo;
+
 import java.io.IOException;
 
 import java.nio.file.Path;

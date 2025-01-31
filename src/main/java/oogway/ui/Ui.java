@@ -1,3 +1,5 @@
+package oogway.ui;
+
 public class Ui {
     private static final String LINE = "____________________________________________________________";
     private static final String NAME = "Master Oogway";
@@ -35,7 +37,7 @@ public class Ui {
     }
 
     public void saveErrorMessage(String errorMessage) {
-        String message = String.format("Error while saving tasks: %s", errorMessage);
+        String message = String.format("Error while saving oogway.tasks: %s", errorMessage);
 
         wrapMessage(message);
     }
@@ -45,7 +47,7 @@ public class Ui {
     }
 
     public void loadErrorMessage(String errorMessage) {
-        String message = String.format("Error while saving tasks: %s", errorMessage);
+        String message = String.format("Error while saving oogway.tasks: %s", errorMessage);
 
         wrapMessage(message);
     }
