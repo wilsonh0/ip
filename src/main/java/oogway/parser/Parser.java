@@ -3,13 +3,7 @@ package oogway.parser;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import oogway.commands.Command;
-import oogway.commands.AddTaskCommand;
-import oogway.commands.DeleteTaskCommand;
-import oogway.commands.ExitCommand;
-import oogway.commands.IncorrectCommand;
-import oogway.commands.ListTasksCommand;
-import oogway.commands.MarkTaskCommand;
+import oogway.commands.*;
 import oogway.storage.TaskList;
 
 
@@ -60,6 +54,7 @@ public class Parser {
             case "list" -> new ListTasksCommand(taskList);
             case "bye" -> new ExitCommand();
             case "mark", "unmark" -> parseMarkTask(commandWord, arguments);
+            case "find" -> new FindTaskCommand(taskList, arguments);
             case "delete" -> parseDeleteTask(arguments);
             default -> new IncorrectCommand(MESSAGE_INVALID_COMMAND);
         };

@@ -34,7 +34,7 @@ public class Oogway {
             storage = new Storage(filePath);
             taskList = storage.loadFromFile();
         } catch (IOException e) {
-            ui.loadErrorMessage(e.getMessage());
+            ui.wrapMessage(e.getMessage());
             taskList = new TaskList();
         }
 
