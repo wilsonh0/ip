@@ -11,12 +11,11 @@ import oogway.storage.Storage;
 import oogway.storage.TaskList;
 import oogway.ui.Ui;
 
-
 public class Oogway {
     private Storage storage;
     private TaskList taskList;
-    private Ui ui;
-    private Parser parser;
+    private final Ui ui;
+    private final Parser parser;
 
     public Oogway(String filePath) {
         ui = new Ui();

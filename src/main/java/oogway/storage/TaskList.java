@@ -1,8 +1,8 @@
 package oogway.storage;
 
-import oogway.tasks.Task;
-
 import java.util.ArrayList;
+
+import oogway.tasks.Task;
 
 public class TaskList {
     private final ArrayList<Task> tasks = new ArrayList<>();
