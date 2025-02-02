@@ -11,13 +11,22 @@ import oogway.storage.Storage;
 import oogway.storage.TaskList;
 import oogway.ui.Ui;
 
-
+/**
+ * The main class for the Oogway application. It manages user interaction, command execution,
+ * and task storage.
+ */
 public class Oogway {
+
     private Storage storage;
     private TaskList taskList;
-    private Ui ui;
-    private Parser parser;
+    private final Ui ui;
+    private final Parser parser;
 
+    /**
+     * Initializes the Oogway application with the specified file path for storage.
+     *
+     * @param filePath the file path where tasks are stored and retrieved
+     */
     public Oogway(String filePath) {
         ui = new Ui();
 
@@ -25,23 +34,35 @@ public class Oogway {
             storage = new Storage(filePath);
             taskList = storage.loadFromFile();
         } catch (IOException e) {
-            ui.loadErrorMessage(e.getMessage());
+            ui.wrapMessage(e.getMessage());
             taskList = new TaskList();
         }
 
         parser = new Parser(taskList);
     }
 
+    /**
+     * Starts the Oogway application by displaying an introduction message and
+     * running the command loop.
+     */
     public void run() {
         ui.introductionMessage();
         runCommandLoopUntilExitCommand();
     }
 
+    /**
+     * The entry point of the Oogway application.
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
         new Oogway(null).run();
     }
 
-    /** Reads the user command and executes it, until the user issues the exit command. */
+    /**
+     * Runs the command loop until an exit command is given by the user.
+     * Reads user input, processes it, and executes the corresponding command.
+     */
     private void runCommandLoopUntilExitCommand() {
         Scanner sc = new Scanner(System.in);
         Command<?> command;
@@ -54,6 +75,13 @@ public class Oogway {
         } while (!ExitCommand.isExit(command));
     }
 
+    /**
+     * Executes the given command and saves the task list to storage.
+     *
+     * @param command the command to be executed
+     * @return the result of executing the command
+     * @throws RuntimeException if an exception occurs during command execution
+     */
     private CommandResult<?> executeCommand(Command<?> command) {
         try {
             CommandResult<?> result = command.execute();
