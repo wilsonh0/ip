@@ -6,27 +6,41 @@ import oogway.tasks.Task;
 import oogway.tasks.ToDo;
 
 import java.io.IOException;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles the loading and saving of tasks to a file for persistent storage.
+ */
 public class Storage {
+
     private final Path filePath;
 
+    /**
+     * Constructs a {@code Storage} instance with the default file path.
+     *
+     * @throws IOException If an error occurs while creating the file or directories.
+     */
     public Storage() throws IOException {
         this(null);
     }
 
+    /**
+     * Constructs a {@code Storage} instance with a custom file path.
+     * If no custom path is provided, a default save location is used.
+     *
+     * @param customFilePath The custom file path for saving tasks.
+     * @throws IOException If an error occurs while creating the file or directories.
+     */
     public Storage(String customFilePath) throws IOException {
         // Default save location
         if (customFilePath == null || customFilePath.isEmpty()) {
             Path saveDirectory = Paths.get("").toAbsolutePath().resolve("data");
 
-            // Check if save directory exists, if not create it
+            // Create save directory if it does not exist
             if (!Files.exists(saveDirectory)) {
                 Files.createDirectory(saveDirectory);
             }
@@ -35,22 +49,34 @@ public class Storage {
         } else {
             this.filePath = Paths.get(customFilePath);
 
-            // Check if parent directory exists, if not create it
+            // Create parent directories if they do not exist
             if (!Files.exists(this.filePath.getParent())) {
                 Files.createDirectories(this.filePath.getParent());
             }
             Files.createFile(this.filePath);
         }
 
+        // Ensure the save file exists
         if (!Files.exists(this.filePath)) {
             Files.createFile(this.filePath);
         }
     }
 
+    /**
+     * Returns the file path where tasks are stored.
+     *
+     * @return The {@code Path} representing the storage file.
+     */
     public Path getFilePath() {
         return filePath;
     }
 
+    /**
+     * Saves the current tasks to the file.
+     *
+     * @param taskList The list of tasks to be saved.
+     * @throws IOException If an error occurs while writing to the file.
+     */
     public void saveToFile(TaskList taskList) throws IOException {
         List<String> taskStrings = new ArrayList<>();
         for (Task task : taskList.getTasks()) {
@@ -60,6 +86,12 @@ public class Storage {
         Files.write(filePath, taskStrings);
     }
 
+    /**
+     * Loads tasks from the file into a {@code TaskList}.
+     *
+     * @return A {@code TaskList} containing the tasks from the file.
+     * @throws IOException If an error occurs while reading the file or the file format is invalid.
+     */
     public TaskList loadFromFile() throws IOException {
         TaskList taskList = new TaskList();
 
