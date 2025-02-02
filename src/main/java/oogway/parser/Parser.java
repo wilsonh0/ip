@@ -48,6 +48,8 @@ public class Parser {
                 return parseMarkTask(commandWord, arguments);
             case "delete":
                 return parseDeleteTask(arguments);
+            case "find":
+                return new FindTaskCommand(taskList, arguments);
             default:
                 return new IncorrectCommand(MESSAGE_INVALID_COMMAND);
         }
