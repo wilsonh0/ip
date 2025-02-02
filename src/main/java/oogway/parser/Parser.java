@@ -1,10 +1,17 @@
 package oogway.parser;
 
-import oogway.commands.*;
-import oogway.storage.TaskList;
-
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+
+import oogway.commands.Command;
+import oogway.commands.AddTaskCommand;
+import oogway.commands.DeleteTaskCommand;
+import oogway.commands.ExitCommand;
+import oogway.commands.IncorrectCommand;
+import oogway.commands.ListTasksCommand;
+import oogway.commands.MarkTaskCommand;
+import oogway.storage.TaskList;
+
 
 /**
  * Parses user input and returns the corresponding command object.
