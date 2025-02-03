@@ -3,7 +3,7 @@ package oogway.commands;
 import oogway.storage.TaskList;
 import oogway.tasks.Task;
 
-public class DeleteTaskCommand extends Command<Task> {
+public class DeleteTaskCommand extends Command {
     private final TaskList taskList;
     private final int taskIndex;
 

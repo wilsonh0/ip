@@ -65,7 +65,7 @@ public class Oogway {
      */
     private void runCommandLoopUntilExitCommand() {
         Scanner sc = new Scanner(System.in);
-        Command<?> command;
+        Command command;
 
         do {
             String userCommandText = sc.nextLine();
@@ -82,7 +82,7 @@ public class Oogway {
      * @return the result of executing the command
      * @throws RuntimeException if an exception occurs during command execution
      */
-    private CommandResult<?> executeCommand(Command<?> command) {
+    private CommandResult<?> executeCommand(Command command) {
         try {
             CommandResult<?> result = command.execute();
             storage.saveToFile(taskList);

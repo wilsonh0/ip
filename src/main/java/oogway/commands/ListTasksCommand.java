@@ -3,7 +3,7 @@ package oogway.commands;
 import oogway.storage.TaskList;
 import oogway.tasks.Task;
 
-public class ListTasksCommand extends Command<Task> {
+public class ListTasksCommand extends Command {
     private final TaskList taskList;
 
     public ListTasksCommand(TaskList taskList) {

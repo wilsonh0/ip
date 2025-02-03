@@ -1,8 +1,7 @@
 package oogway.commands;
 
-import oogway.tasks.Task;
 
-public class IncorrectCommand extends Command<Task> {
+public class IncorrectCommand extends Command {
     private final String message;
 
     public IncorrectCommand(String message) {
@@ -10,7 +9,7 @@ public class IncorrectCommand extends Command<Task> {
     }
 
     @Override
-    public CommandResult<Task> execute() {
+    public CommandResult<Void> execute() {
         return new CommandResult<>(false, message);
     }
 }

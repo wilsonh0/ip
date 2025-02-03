@@ -5,7 +5,7 @@ import oogway.tasks.Task;
 
 import java.util.List;
 
-public class FindTaskCommand extends Command<List<Task>> {
+public class FindTaskCommand extends Command {
     private final TaskList taskList;
     private final String keyword;
 

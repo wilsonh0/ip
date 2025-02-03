@@ -6,7 +6,7 @@ import oogway.tasks.Event;
 import oogway.tasks.Task;
 import oogway.tasks.ToDo;
 
-public class AddTaskCommand extends Command<Task> {
+public class AddTaskCommand extends Command {
     private final TaskList taskList;
     private final String taskType;
     private final String taskDescription;

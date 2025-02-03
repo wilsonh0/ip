@@ -37,7 +37,7 @@ public class Parser {
      * @param userInput The raw user input string.
      * @return A {@code Command} object corresponding to the input, or an {@code IncorrectCommand} if invalid.
      */
-    public Command<?> parseCommand(String userInput) {
+    public Command parseCommand(String userInput) {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
 
         if (!matcher.matches()) {
@@ -66,7 +66,7 @@ public class Parser {
      * @param arguments The arguments for the todo task.
      * @return An {@code AddTaskCommand} object for adding a todo task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command<?> parseTodo(String arguments) {
+    public Command parseTodo(String arguments) {
         final Matcher matcher = TODO_PATTERN.matcher(arguments.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, "Usage: todo <description>"));
@@ -82,7 +82,7 @@ public class Parser {
      * @param arguments The arguments for the deadline task.
      * @return An {@code AddTaskCommand} object for adding a deadline task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command<?> parseDeadline(String arguments) {
+    public Command parseDeadline(String arguments) {
         final Matcher matcher = DEADLINE_PATTERN.matcher(arguments.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -100,7 +100,7 @@ public class Parser {
      * @param arguments The arguments for the event task.
      * @return An {@code AddTaskCommand} object for adding an event task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command<?> parseEvent(String arguments) {
+    public Command parseEvent(String arguments) {
         final Matcher matcher = EVENT_PATTERN.matcher(arguments.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -120,7 +120,7 @@ public class Parser {
      * @param arguments The arguments for marking or unmarking a task.
      * @return A {@code MarkTaskCommand} object for marking or unmarking a task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command<?> parseMarkTask(String commandWord, String arguments) {
+    public Command parseMarkTask(String commandWord, String arguments) {
         try {
             int taskIndex = Integer.parseInt(arguments.trim()) - 1;
             return new MarkTaskCommand(taskList, taskIndex, commandWord.equals("mark"));
@@ -135,7 +135,7 @@ public class Parser {
      * @param arguments The arguments for deleting a task.
      * @return A {@code DeleteTaskCommand} object for deleting a task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command<?> parseDeleteTask(String arguments) {
+    public Command parseDeleteTask(String arguments) {
         try {
             int taskIndex = Integer.parseInt(arguments.trim()) - 1;
             return new DeleteTaskCommand(taskList, taskIndex);
