@@ -1,5 +1,8 @@
-package oogway.ui;
+package oogway.ui.cli;
 
+/**
+ * Represents the user interface for the Oogway application.
+ */
 public class Ui {
 
     private static final String LINE = "____________________________________________________________";

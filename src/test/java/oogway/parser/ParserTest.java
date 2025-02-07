@@ -1,6 +1,7 @@
 package oogway.parser;
 
-import oogway.commands.*;
+import oogway.logic.commands.*;
+import oogway.logic.parser.Parser;
 import oogway.storage.TaskList;
 import org.junit.jupiter.api.Test;
 

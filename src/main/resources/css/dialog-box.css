@@ -1,0 +1,33 @@
+.label {
+    -fx-background-color: linear-gradient(to bottom right, #c8a165, #8c7a5b); /* Gold gradient */
+    -fx-border-color: #6b4226; /* Brown border */
+    -fx-border-width: 2px;
+    -fx-background-radius: 1em 1em 0 1em;
+    -fx-border-radius: 1em 1em 0 1em;
+    -fx-text-fill: text-color;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.reply-label {
+    -fx-background-radius: 1em 1em 1em 0;
+    -fx-border-radius: 1em 1em 1em 0;
+}
+
+/* Styling for the display picture (avatar) */
+#displayPicture {
+    /* Shadow effect on image */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
+
+    /* Change size of image */
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+
+    /* Rotate image clockwise by degrees */
+    -fx-rotate: 0;
+
+    /* Add a circular border */
+    -fx-border-color: primary-color;
+    -fx-border-width: 2px;
+    -fx-border-radius: 50%;
+}

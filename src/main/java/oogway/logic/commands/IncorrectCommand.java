@@ -1,4 +1,4 @@
-package oogway.commands;
+package oogway.logic.commands;
 
 
 public class IncorrectCommand extends Command {

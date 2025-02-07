@@ -1,8 +1,8 @@
-package oogway.commands;
+package oogway.logic.commands;
 
 public class ExitCommand extends Command {
 
-    private final String MESSAGE_EXIT = "Farewell, young one. I hope to guide you again someday.\n"
+    private static final String MESSAGE_EXIT = "Farewell, young one. I hope to guide you again someday.\n"
             + "And never forget... Yesterday is history, Tomorrow is a mystery, but Today is a gift. "
             + "That is why it is called the present.";
 

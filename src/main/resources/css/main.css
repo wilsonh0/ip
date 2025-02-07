@@ -1,0 +1,61 @@
+.root {
+    /* Master Oogway-inspired colors */
+    main-color: #2a4a2c; /* Deep green for the background, like the Jade Palace */
+    text-color: white; /* Light beige for text, resembling parchment */
+    primary-color: #c8a165; /* Gold for buttons and accents, like Oogway's shell */
+    secondary-color: #8c7a5b; /* Darker gold for hover effects */
+    tertiary-color: #6b4226; /* Brown for scroll bars and highlights, like wood */
+
+    -fx-background-color: main-color;
+    -fx-text-fill: text-color;
+}
+
+.text-field {
+    -fx-background-color: #3a5a40; /* Darker green for input fields */
+    -fx-text-fill: text-color;
+    -fx-font: 14px "Arial";
+    -fx-border-color: primary-color;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.button {
+    -fx-background-color: primary-color;
+    -fx-text-fill: main-color;
+    -fx-font: bold 14px "Arial";
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+}
+
+.button:hover {
+    -fx-background-color: secondary-color;
+    -fx-text-fill: main-color;
+    -fx-font-size: 14px;
+}
+
+.button:pressed {
+    -fx-background-color: tertiary-color;
+    -fx-text-fill: text-color;
+    -fx-font-size: 14px;
+}
+
+.scroll-pane,
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: main-color;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: tertiary-color;
+    -fx-background-radius: 1em;
+}
+
+/* Hides the increment and decrement buttons. */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}

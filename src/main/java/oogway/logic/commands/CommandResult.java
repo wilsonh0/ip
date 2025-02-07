@@ -1,4 +1,4 @@
-package oogway.commands;
+package oogway.logic.commands;
 
 import java.util.Optional;
 

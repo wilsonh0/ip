@@ -1,4 +1,4 @@
-package oogway.commands;
+package oogway.logic.commands;
 
 import oogway.storage.TaskList;
 import oogway.tasks.Deadline;
@@ -47,24 +47,24 @@ public class AddTaskCommand extends Command {
         Task task;
 
         switch (taskType) {
-            case "todo" -> task = new ToDo(taskDescription, false);
-            case "deadline" -> {
-                try {
-                    task = new Deadline(taskDescription, false, by);
-                } catch (Exception e) {
-                    return new CommandResult<>(false, e.getMessage());
-                }
+        case "todo" -> task = new ToDo(taskDescription, false);
+        case "deadline" -> {
+            try {
+                task = new Deadline(taskDescription, false, by);
+            } catch (Exception e) {
+                return new CommandResult<>(false, e.getMessage());
             }
-            case "event" -> {
-                try {
-                    task = new Event(taskDescription, false, from, to);
-                } catch (Exception e) {
-                    return new CommandResult<>(false, e.getMessage());
-                }
+        }
+        case "event" -> {
+            try {
+                task = new Event(taskDescription, false, from, to);
+            } catch (Exception e) {
+                return new CommandResult<>(false, e.getMessage());
             }
-            default -> {
-                return new CommandResult<>(false, "Invalid task type!");
-            }
+        }
+        default -> {
+            return new CommandResult<>(false, "Invalid task type!");
+        }
         }
 
         taskList.addTask(task);

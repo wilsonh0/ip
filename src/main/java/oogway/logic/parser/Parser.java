@@ -1,9 +1,9 @@
-package oogway.parser;
+package oogway.logic.parser;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import oogway.commands.*;
+import oogway.logic.commands.*;
 import oogway.storage.TaskList;
 
 
