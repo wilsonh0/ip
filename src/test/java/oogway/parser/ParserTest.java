@@ -1,11 +1,18 @@
 package oogway.parser;
 
-import oogway.logic.commands.*;
-import oogway.logic.parser.Parser;
-import oogway.storage.TaskList;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import oogway.logic.commands.AddTaskCommand;
+import oogway.logic.commands.Command;
+import oogway.logic.commands.DeleteTaskCommand;
+import oogway.logic.commands.ExitCommand;
+import oogway.logic.commands.IncorrectCommand;
+import oogway.logic.commands.ListTasksCommand;
+import oogway.logic.commands.MarkTaskCommand;
+import oogway.logic.parser.Parser;
+import oogway.storage.TaskList;
 
 public class ParserTest {
     private final Parser parser = new Parser(new TaskList());

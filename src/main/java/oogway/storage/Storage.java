@@ -1,13 +1,11 @@
 package oogway.storage;
 
-
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import oogway.tasks.Deadline;
 import oogway.tasks.Event;
@@ -111,20 +109,20 @@ public class Storage {
             String description = arr[2];
 
             switch (taskType) {
-                case "T" -> taskList.addTask(new ToDo(description, isDone));
-                case "D" -> {
-                    if (arr.length < 4) {
-                        throw new IOException("Invalid deadline task found in save file.");
-                    }
-                    taskList.addTask(new Deadline(description, isDone, arr[3]));
+            case "T" -> taskList.addTask(new ToDo(description, isDone));
+            case "D" -> {
+                if (arr.length < 4) {
+                    throw new IOException("Invalid deadline task found in save file.");
                 }
-                case "E" -> {
-                    if (arr.length < 5) {
-                        throw new IOException("Invalid event task found in save file.");
-                    }
-                    taskList.addTask(new Event(description, isDone, arr[3], arr[4]));
+                taskList.addTask(new Deadline(description, isDone, arr[3]));
+            }
+            case "E" -> {
+                if (arr.length < 5) {
+                    throw new IOException("Invalid event task found in save file.");
                 }
-                default -> throw new IOException("Invalid task type found in save file.");
+                taskList.addTask(new Event(description, isDone, arr[3], arr[4]));
+            }
+            default -> throw new IOException("Invalid task type found in save file.");
             }
         }
 

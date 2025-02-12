@@ -3,6 +3,9 @@ package oogway.logic.commands;
 import oogway.storage.TaskList;
 import oogway.tasks.Task;
 
+/**
+ * Lists all tasks in the task list.
+ */
 public class ListTasksCommand extends Command {
     private final TaskList taskList;
 
