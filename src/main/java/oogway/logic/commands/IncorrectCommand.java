@@ -1,6 +1,8 @@
 package oogway.logic.commands;
 
-
+/**
+ * Represents a command that is not recognized by the parser.
+ */
 public class IncorrectCommand extends Command {
     private final String message;
 

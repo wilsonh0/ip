@@ -6,6 +6,9 @@ import oogway.tasks.Event;
 import oogway.tasks.Task;
 import oogway.tasks.ToDo;
 
+/**
+ * Adds a task to the task list.
+ */
 public class AddTaskCommand extends Command {
     private final TaskList taskList;
     private final String taskType;
@@ -14,7 +17,16 @@ public class AddTaskCommand extends Command {
     private final String from;
     private final String to;
 
-    // For Event
+    /**
+     * Initializes a new AddTaskCommand with the specified task list, task type, task description, deadline, and event
+     * timing.
+     * @param taskList The task list to add the task to.
+     * @param taskType The type of task to add.
+     * @param taskDescription The description of the task.
+     * @param by The deadline of the task.
+     * @param from The start time of the event.
+     * @param to The end time of the event.
+     */
     public AddTaskCommand(TaskList taskList, String taskType, String taskDescription,
                           String by, String from, String to) {
         this.taskList = taskList;
@@ -25,22 +37,40 @@ public class AddTaskCommand extends Command {
         this.to = to;
     }
 
-    // To-do
+    /**
+     * Initializes a new AddTaskCommand for a TODO task with the specified task list, task type, and task description.
+     * @param taskList The task list to add the task to.
+     * @param taskType The type of task to add.
+     * @param taskDescription The description of the task.
+     */
     public AddTaskCommand(TaskList taskList, String taskType, String taskDescription) {
         this(taskList, taskType, taskDescription, null, null, null);
     }
 
-    // Deadline
+    /**
+     * Initializes a new AddTaskCommand for a DEADLINE task with the specified task list, task type, task description,
+     * and deadline.
+     * @param taskList The task list to add the task to.
+     * @param taskType The type of task to add.
+     * @param taskDescription The description of the task.
+     * @param by The deadline of the task.
+     */
     public AddTaskCommand(TaskList taskList, String taskType, String taskDescription, String by) {
         this(taskList, taskType, taskDescription, by, null, null);
     }
 
-    // Event
+    /**
+     * Initializes a new AddTaskCommand for an EVENT task with the specified task list, task type, task description,
+     * start time, and end time.
+     * @param taskList The task list to add the task to.
+     * @param taskType The type of task to add.
+     * @param taskDescription The description of the task.
+     * @param from The start time of the event.
+     * @param to The end time of the event.
+     */
     public AddTaskCommand(TaskList taskList, String taskType, String taskDescription, String from, String to) {
         this(taskList, taskType, taskDescription, null, from, to);
     }
-
-    // Event
 
     @Override
     public CommandResult<Task>execute() {

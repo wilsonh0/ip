@@ -1,9 +1,16 @@
 package oogway.logic.parser;
 
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import oogway.logic.commands.*;
+import oogway.logic.commands.AddTaskCommand;
+import oogway.logic.commands.Command;
+import oogway.logic.commands.DeleteTaskCommand;
+import oogway.logic.commands.ExitCommand;
+import oogway.logic.commands.FindTaskCommand;
+import oogway.logic.commands.IncorrectCommand;
+import oogway.logic.commands.ListTasksCommand;
+import oogway.logic.commands.MarkTaskCommand;
 import oogway.storage.TaskList;
 
 
@@ -11,16 +18,17 @@ import oogway.storage.TaskList;
  * Parses user input and returns the corresponding command object.
  */
 public class Parser {
-    private final TaskList taskList;
-
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-    private static final Pattern EVENT_PATTERN = Pattern.compile("^(?<description>[^/]+) " +
-            "/from (?<from>[^/]+) /to (?<to>[^/]+)$");
+    private static final Pattern EVENT_PATTERN = Pattern.compile("^(?<description>[^/]+) "
+            + "/from (?<from>[^/]+) /to (?<to>[^/]+)$");
     private static final Pattern DEADLINE_PATTERN = Pattern.compile("^(?<description>[^/]+) /by (?<by>[^/]+)$");
     private static final Pattern TODO_PATTERN = Pattern.compile("^(?<description>[^/]+)$");
 
     private static final String MESSAGE_INVALID_COMMAND = "Command not found!";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
+
+
+    private final TaskList taskList;
 
     /**
      * Initializes a new parser with the specified task list.
@@ -48,15 +56,15 @@ public class Parser {
         String arguments = matcher.group("arguments").trim();
 
         return switch (commandWord) {
-            case "todo" -> parseTodo(arguments);
-            case "deadline" -> parseDeadline(arguments);
-            case "event" -> parseEvent(arguments);
-            case "list" -> new ListTasksCommand(taskList);
-            case "bye" -> new ExitCommand();
-            case "mark", "unmark" -> parseMarkTask(commandWord, arguments);
-            case "find" -> new FindTaskCommand(taskList, arguments);
-            case "delete" -> parseDeleteTask(arguments);
-            default -> new IncorrectCommand(MESSAGE_INVALID_COMMAND);
+        case "todo" -> parseTodo(arguments);
+        case "deadline" -> parseDeadline(arguments);
+        case "event" -> parseEvent(arguments);
+        case "list" -> new ListTasksCommand(taskList);
+        case "bye" -> new ExitCommand();
+        case "mark", "unmark" -> parseMarkTask(commandWord, arguments);
+        case "find" -> new FindTaskCommand(taskList, arguments);
+        case "delete" -> parseDeleteTask(arguments);
+        default -> new IncorrectCommand(MESSAGE_INVALID_COMMAND);
         };
     }
 
@@ -114,11 +122,12 @@ public class Parser {
     }
 
     /**
-     * Parses the user input for marking or unmarking a task and returns the corresponding {@code MarkTaskCommand} object.
+     * Parses the user input for marking or unmarking a task and returns the corresponding
+     * {@code MarkTaskCommand} object.
      *
      * @param commandWord The command word for marking or unmarking a task.
      * @param arguments The arguments for marking or unmarking a task.
-     * @return A {@code MarkTaskCommand} object for marking or unmarking a task, or an {@code IncorrectCommand} if invalid.
+     * @return A {@code MarkTaskCommand} object for marking or unmarking a task, or {@code IncorrectCommand} if invalid.
      */
     public Command parseMarkTask(String commandWord, String arguments) {
         try {
