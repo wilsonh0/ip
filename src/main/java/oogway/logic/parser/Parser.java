@@ -50,6 +50,8 @@ public class Parser {
      * @return A {@code Command} object corresponding to the input, or an {@code IncorrectCommand} if invalid.
      */
     public Command parseCommand(String userInput) {
+        assert userInput != null : "User input should not be null";
+
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
 
         if (!matcher.matches()) {

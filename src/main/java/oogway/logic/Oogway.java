@@ -42,6 +42,8 @@ public class Oogway {
      * @throws RuntimeException if an exception occurs during command execution
      */
     public CommandResult<?> executeCommand(Command command) {
+        assert command != null : "Command should not be null";
+
         try {
             CommandResult<?> result = command.execute();
             storage.saveToFile(taskList);
@@ -59,7 +61,13 @@ public class Oogway {
      * @param userCommandText the user command text to be parsed
      * @return the command corresponding to the user command text
      */
+    @SuppressWarnings("checkstyle:Regexp")
     public Command parseCommand(String userCommandText) {
-        return parser.parseCommand(userCommandText);
+        assert userCommandText != null : "User command text should not be null";
+
+        Command command = parser.parseCommand(userCommandText);
+        assert command != null : "Command should not be null";
+
+        return command;
     }
 }

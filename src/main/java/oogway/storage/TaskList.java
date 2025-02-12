@@ -18,6 +18,8 @@ public class TaskList {
      * @param task The task to be added.
      */
     public void addTask(Task task) {
+        assert task != null : "Task cannot be null";
+
         tasks.add(task);
     }
 
@@ -29,6 +31,8 @@ public class TaskList {
      * @throws IndexOutOfBoundsException If the index is out of range.
      */
     public Task getTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of range";
+
         return tasks.get(index);
     }
 
@@ -40,6 +44,8 @@ public class TaskList {
      * @throws IndexOutOfBoundsException If the index is out of range.
      */
     public Task deleteTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of range";
+
         return tasks.remove(index);
     }
 
@@ -68,12 +74,15 @@ public class TaskList {
      * @return A list of tasks whose descriptions contain the keyword.
      */
     public List<Task> findTasks(String keyword) {
+        assert keyword != null : "Keyword cannot be null";
+
         ArrayList<Task> foundTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.getDescription().contains(keyword)) {
                 foundTasks.add(task);
             }
         }
+
         return foundTasks;
     }
 

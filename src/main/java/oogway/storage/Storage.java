@@ -78,6 +78,8 @@ public class Storage {
      * @throws IOException If an error occurs while writing to the file.
      */
     public void saveToFile(TaskList taskList) throws IOException {
+        assert taskList != null : "Task list should not be null";
+
         List<String> taskStrings = new ArrayList<>();
         for (Task task : taskList.getTasks()) {
             taskStrings.add(task.toSaveFormat());
