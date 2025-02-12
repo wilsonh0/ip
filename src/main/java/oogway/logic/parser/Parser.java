@@ -13,7 +13,6 @@ import oogway.logic.commands.ListTasksCommand;
 import oogway.logic.commands.MarkTaskCommand;
 import oogway.storage.TaskList;
 
-
 /**
  * Parses user input and returns the corresponding command object.
  */
@@ -86,7 +85,7 @@ public class Parser {
         }
         String description = matcher.group("description");
 
-        return new AddTaskCommand(taskList, "todo", description);
+        return AddTaskCommand.createTodo(taskList, description);
     }
 
     /**
@@ -104,7 +103,7 @@ public class Parser {
         String description = matcher.group("description");
         String by = matcher.group("by");
 
-        return new AddTaskCommand(taskList, "deadline", description, by);
+        return AddTaskCommand.createDeadline(taskList, description, by);
     }
 
     /**
@@ -123,7 +122,7 @@ public class Parser {
         String from = matcher.group("from");
         String to = matcher.group("to");
 
-        return new AddTaskCommand(taskList, "event", description, from, to);
+        return AddTaskCommand.createEvent(taskList, description, from, to);
     }
 
     /**
