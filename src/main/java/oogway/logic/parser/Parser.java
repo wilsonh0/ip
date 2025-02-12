@@ -18,14 +18,19 @@ import oogway.storage.TaskList;
  * Parses user input and returns the corresponding command object.
  */
 public class Parser {
+    private static final String DESC = "(?<description>[^/]+)";
+    private static final String FROM = " /from (?<from>[^/]+)";
+    private static final String TO = " /to (?<to>[^/]+)";
+    private static final String BY = " /by (?<by>[^/]+)";
+
+    private static final Pattern TODO_PATTERN = Pattern.compile("^" + DESC + "$");
+    private static final Pattern DEADLINE_PATTERN = Pattern.compile("^" + DESC + BY + "$");
+    private static final Pattern EVENT_PATTERN = Pattern.compile("^" + DESC + FROM + TO + "$");
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-    private static final Pattern EVENT_PATTERN = Pattern.compile("^(?<description>[^/]+) "
-            + "/from (?<from>[^/]+) /to (?<to>[^/]+)$");
-    private static final Pattern DEADLINE_PATTERN = Pattern.compile("^(?<description>[^/]+) /by (?<by>[^/]+)$");
-    private static final Pattern TODO_PATTERN = Pattern.compile("^(?<description>[^/]+)$");
 
     private static final String MESSAGE_INVALID_COMMAND = "Command not found!";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
+    private static final String MESSAGE_INVALID_TASK_NUMBER = "ERROR: Task number must be an integer! \n%1$s";
 
 
     private final TaskList taskList;
@@ -56,14 +61,14 @@ public class Parser {
         String arguments = matcher.group("arguments").trim();
 
         return switch (commandWord) {
+        case "bye" -> parseExit();
         case "todo" -> parseTodo(arguments);
         case "deadline" -> parseDeadline(arguments);
         case "event" -> parseEvent(arguments);
-        case "list" -> new ListTasksCommand(taskList);
-        case "bye" -> new ExitCommand();
-        case "mark", "unmark" -> parseMarkTask(commandWord, arguments);
-        case "find" -> new FindTaskCommand(taskList, arguments);
-        case "delete" -> parseDeleteTask(arguments);
+        case "list" -> parseList();
+        case "find" -> parseFind(arguments);
+        case "delete" -> parseDelete(arguments);
+        case "mark", "unmark" -> parseMark(commandWord, arguments);
         default -> new IncorrectCommand(MESSAGE_INVALID_COMMAND);
         };
     }
@@ -74,7 +79,7 @@ public class Parser {
      * @param arguments The arguments for the todo task.
      * @return An {@code AddTaskCommand} object for adding a todo task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command parseTodo(String arguments) {
+    private Command parseTodo(String arguments) {
         final Matcher matcher = TODO_PATTERN.matcher(arguments.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, "Usage: todo <description>"));
@@ -90,7 +95,7 @@ public class Parser {
      * @param arguments The arguments for the deadline task.
      * @return An {@code AddTaskCommand} object for adding a deadline task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command parseDeadline(String arguments) {
+    private Command parseDeadline(String arguments) {
         final Matcher matcher = DEADLINE_PATTERN.matcher(arguments.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -108,7 +113,7 @@ public class Parser {
      * @param arguments The arguments for the event task.
      * @return An {@code AddTaskCommand} object for adding an event task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command parseEvent(String arguments) {
+    private Command parseEvent(String arguments) {
         final Matcher matcher = EVENT_PATTERN.matcher(arguments.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -129,12 +134,12 @@ public class Parser {
      * @param arguments The arguments for marking or unmarking a task.
      * @return A {@code MarkTaskCommand} object for marking or unmarking a task, or {@code IncorrectCommand} if invalid.
      */
-    public Command parseMarkTask(String commandWord, String arguments) {
+    private Command parseMark(String commandWord, String arguments) {
         try {
             int taskIndex = Integer.parseInt(arguments.trim()) - 1;
             return new MarkTaskCommand(taskList, taskIndex, commandWord.equals("mark"));
         } catch (NumberFormatException e) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, "Usage: mark <task number>"));
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_TASK_NUMBER, "Usage: mark <task number>"));
         }
     }
 
@@ -144,12 +149,40 @@ public class Parser {
      * @param arguments The arguments for deleting a task.
      * @return A {@code DeleteTaskCommand} object for deleting a task, or an {@code IncorrectCommand} if invalid.
      */
-    public Command parseDeleteTask(String arguments) {
+    private Command parseDelete(String arguments) {
         try {
             int taskIndex = Integer.parseInt(arguments.trim()) - 1;
             return new DeleteTaskCommand(taskList, taskIndex);
         } catch (NumberFormatException e) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, "Usage: delete <task number>"));
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_TASK_NUMBER, "Usage: delete <task number>"));
         }
+    }
+
+    /**
+     * Creates a {@code FindTaskCommand} using the given search query.
+     *
+     * @param arguments The search query for finding tasks.
+     * @return A {@code FindTaskCommand} object for finding tasks, or an {@code IncorrectCommand} if invalid.
+     */
+    private FindTaskCommand parseFind(String arguments) {
+        return new FindTaskCommand(taskList, arguments);
+    }
+
+    /**
+     * Returns a {@code ListTasksCommand} to display all tasks in the task list.
+     *
+     * @return A {@code ListTasksCommand} object for listing tasks.
+     */
+    private ListTasksCommand parseList() {
+        return new ListTasksCommand(taskList);
+    }
+
+    /**
+     * Returns an {@code ExitCommand} to terminate the application.
+     *
+     * @return An {@code ExitCommand} object for exiting the application.
+     */
+    private ExitCommand parseExit() {
+        return new ExitCommand();
     }
 }
