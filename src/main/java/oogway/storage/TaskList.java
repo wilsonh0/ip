@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import oogway.tasks.Task;
+import oogway.tasks.TaskDateTimeComparator;
 
 /**
  * Represents a list of tasks, providing methods to add, retrieve, and remove tasks.
@@ -94,5 +95,12 @@ public class TaskList {
      */
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks);
+    }
+
+    /**
+     * Sorts the tasks in the list by their comparison date and time.
+     */
+    public void sortTasks() {
+        tasks.sort(new TaskDateTimeComparator());
     }
 }

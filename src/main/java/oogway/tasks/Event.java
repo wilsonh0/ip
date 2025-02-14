@@ -71,6 +71,11 @@ public class Event extends Task {
         return endDateTime;
     }
 
+    @Override
+    public LocalDateTime getComparisonDateTime() {
+        return startDateTime;
+    }
+
     /**
      * Returns a string representation of the event formatted for saving to a file.
      * The format follows: {@code taskType | completionStatus | description | startDateTime | endTime}.

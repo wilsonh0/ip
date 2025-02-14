@@ -52,6 +52,11 @@ public class Deadline extends Task {
         return endDateTime;
     }
 
+    @Override
+    public LocalDateTime getComparisonDateTime() {
+        return endDateTime;
+    }
+
     /**
      * Returns a string representation of the event formatted for saving to a file.
      * The format follows: {@code taskType | completionStatus | description | endDateTime}.

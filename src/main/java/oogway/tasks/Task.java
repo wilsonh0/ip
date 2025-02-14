@@ -1,5 +1,7 @@
 package oogway.tasks;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents an abstract task with a description and a completion status.
  * Subclasses must define the task type.
@@ -54,6 +56,16 @@ public abstract class Task {
      */
     public void setDone(boolean isDone) {
         this.isDone = isDone;
+    }
+
+    /**
+     * Returns the date and time for comparison.
+     * Subclasses must implement this method to provide a specific date and time.
+     *
+     * @return The date and time for comparison.
+     */
+    public LocalDateTime getComparisonDateTime() {
+        return null;
     }
 
     /**
