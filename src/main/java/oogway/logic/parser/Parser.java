@@ -8,6 +8,7 @@ import oogway.logic.commands.Command;
 import oogway.logic.commands.DeleteTaskCommand;
 import oogway.logic.commands.ExitCommand;
 import oogway.logic.commands.FindTaskCommand;
+import oogway.logic.commands.HelpCommand;
 import oogway.logic.commands.IncorrectCommand;
 import oogway.logic.commands.ListTasksCommand;
 import oogway.logic.commands.MarkTaskCommand;
@@ -63,10 +64,11 @@ public class Parser {
 
         return switch (commandWord) {
         case "bye" -> parseExit();
+        case "help" -> parseHelp();
+        case "list" -> parseList();
         case "todo" -> parseTodo(arguments);
         case "deadline" -> parseDeadline(arguments);
         case "event" -> parseEvent(arguments);
-        case "list" -> parseList();
         case "find" -> parseFind(arguments);
         case "delete" -> parseDelete(arguments);
         case "mark", "unmark" -> parseMark(commandWord, arguments);
@@ -185,5 +187,14 @@ public class Parser {
      */
     private ExitCommand parseExit() {
         return new ExitCommand();
+    }
+
+    /**
+     * Returns a {@code HelpCommand} to display the help message.
+     *
+     * @return A {@code HelpCommand} object for displaying the help message.
+     */
+    private Command parseHelp() {
+        return new HelpCommand();
     }
 }
