@@ -46,6 +46,7 @@ public class Oogway {
 
         try {
             CommandResult<?> result = command.execute();
+            taskList.sortTasks();
             storage.saveToFile(taskList);
             return result;
         } catch (IOException e) {

@@ -20,7 +20,7 @@ public class ListTasksCommand extends Command {
         } else {
             StringBuilder message = new StringBuilder("Here are the tasks in your list:\n");
             for (int i = 0; i < taskList.getTaskCount(); i++) {
-                message.append(((i + 1))).append(".").append(taskList.getTask(i)).append("\n");
+                message.append(((i + 1))).append(") ").append(taskList.getTask(i)).append("\n");
             }
             return new CommandResult<>(true, message.toString());
         }
