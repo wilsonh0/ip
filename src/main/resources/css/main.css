@@ -8,12 +8,14 @@
 
     -fx-background-color: main-color;
     -fx-text-fill: text-color;
+    -fx-font-family: "Aptos";
+    -fx-font-size: 14px;
 }
 
 .text-field {
     -fx-background-color: #3a5a40; /* Darker green for input fields */
     -fx-text-fill: text-color;
-    -fx-font: 14px "Arial";
+    -fx-font-size: 14px;
     -fx-border-color: primary-color;
     -fx-border-radius: 5px;
     -fx-padding: 5px;
@@ -22,7 +24,8 @@
 .button {
     -fx-background-color: primary-color;
     -fx-text-fill: main-color;
-    -fx-font: bold 14px "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
     -fx-background-radius: 5px;
     -fx-padding: 10px 20px;
 }

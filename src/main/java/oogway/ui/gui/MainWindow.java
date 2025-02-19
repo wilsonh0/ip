@@ -65,16 +65,23 @@ public class MainWindow extends AnchorPane {
         Command command = oogway.parseCommand(input);
         CommandResult<?> result = oogway.executeCommand(command);
 
+        // Check if the command is an exit command
         if (ExitCommand.isExit(command)) {
             exitMessage(result.getMessage());
             return;
         }
 
         String response = result.getMessage();
+        DialogBox oogwayDialog = DialogBox.getOogwayDialog(response, oogwayImage);
+
+        // Set the style of the dialog box based on the success of the command
+        if (!result.isSuccess()) {
+            oogwayDialog.setErrorStyle();
+        }
 
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getOogwayDialog(response, oogwayImage)
+                oogwayDialog
         );
         userInput.clear();
     }

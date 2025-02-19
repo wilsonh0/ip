@@ -1,12 +1,12 @@
 .label {
-    -fx-background-color: linear-gradient(to bottom right, #c8a165, #8c7a5b); /* Gold gradient */
-    -fx-border-color: #6b4226; /* Brown border */
-    -fx-border-width: 2px;
+    -fx-background-color: linear-gradient(to bottom right, #4A3C2A, #6B563C);
+    -fx-border-color: primary-color;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
     -fx-text-fill: text-color;
     -fx-padding: 10px;
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }
 
 .reply-label {
@@ -14,20 +14,9 @@
     -fx-border-radius: 1em 1em 1em 0;
 }
 
-/* Styling for the display picture (avatar) */
-#displayPicture {
-    /* Shadow effect on image */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
-
-    /* Change size of image */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees */
-    -fx-rotate: 0;
-
-    /* Add a circular border */
-    -fx-border-color: primary-color;
-    -fx-border-width: 2px;
-    -fx-border-radius: 50%;
+.error-label {
+    -fx-background-color: #a43d2e;
+    -fx-border-color: white;
+    -fx-text-fill: text-color;
+    -fx-font-weight: bold;
 }

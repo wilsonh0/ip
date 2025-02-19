@@ -36,6 +36,7 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
+        dialog.setWrapText(true);
         displayPicture.setImage(img);
 
         roundImage();
@@ -83,5 +84,12 @@ public class DialogBox extends HBox {
         var db = new DialogBox(text, img);
         db.flip();
         return db;
+    }
+
+    /**
+     * Sets the style of the dialog box to indicate an error.
+     */
+    public void setErrorStyle() {
+        dialog.getStyleClass().add("error-label");
     }
 }

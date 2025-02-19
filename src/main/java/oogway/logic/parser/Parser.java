@@ -28,7 +28,7 @@ public class Parser {
     private static final Pattern EVENT_PATTERN = Pattern.compile("^" + DESC + FROM + TO + "$");
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final String MESSAGE_INVALID_COMMAND = "Command not found!";
+    private static final String MESSAGE_INVALID_COMMAND = "Invalid command!\nType 'help' to see the list of commands.";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     private static final String MESSAGE_INVALID_TASK_NUMBER = "ERROR: Task number must be an integer! \n%1$s";
 

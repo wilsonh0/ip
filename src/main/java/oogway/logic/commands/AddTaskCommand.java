@@ -88,7 +88,7 @@ public class AddTaskCommand extends Command {
         taskList.addTask(task);
 
         String message = "Alright, I have noted down the task:\n  "
-                + task + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
+                + task + "\n\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
 
         return new CommandResult<>(true, message, task);
     }
