@@ -28,7 +28,8 @@ public class Deadline extends Task {
         try {
             endDateTime = LocalDateTime.parse(dateTimeString, inputFormatter);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date. Follow this format: [yyyy-MM-dd HHmm]");
+            throw new IllegalArgumentException("Invalid date!\n"
+                    + "Date Format: /by <yyyy-MM-dd HHmm>");
         }
     }
 

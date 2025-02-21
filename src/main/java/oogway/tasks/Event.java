@@ -38,7 +38,8 @@ public class Event extends Task {
             LocalTime endTime = LocalTime.parse(endTimeString, endDateFormatter);
             this.endDateTime = startDateTime.toLocalDate().atTime(endTime);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date. Follow this format: [yyyy-MM-dd HHmm]");
+            throw new IllegalArgumentException("Invalid date!\n"
+                    + "Date Format: /from <yyyy-MM-dd HHmm> /to <HHmm>");
         }
     }
 

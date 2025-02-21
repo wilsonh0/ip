@@ -15,13 +15,14 @@ public class HelpCommand extends Command {
             + "find <keyword> - Search for tasks containing the keyword\n\n"
 
             + "=== ADDING TASKS ===\n"
-            + "todo <description> - Add a to-do task\n"
-            + "deadline <description> /by <date> - Add a task with a deadline\n"
-            + "event <description> /from <start> /to <end> - Add an event with a time range\n\n"
+            + "todo <desc> - Add a to-do task\n"
+            + "deadline <desc> /by <yyyy-MM-dd HHmm> - Add a task with a deadline\n"
+            + "event <desc> /from <yyyy-MM-dd HHmm> /to <HHmm> - Add an event with a time range\n\n"
 
             + "=== MODIFYING TASKS ===\n"
-            + "done <task number> - Mark a task as completed\n"
-            + "delete <task number> - Remove a task from the list";
+            + "mark <index> - Mark a task as completed\n"
+            + "unmark <index> - Mark a task as incomplete\n"
+            + "delete <index> - Remove a task from the list";
 
     @Override
     public CommandResult<Void> execute() {
