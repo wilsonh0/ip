@@ -9,6 +9,11 @@ import oogway.tasks.Task;
 public class ListTasksCommand extends Command {
     private final TaskList taskList;
 
+    /**
+     * Initializes a new ListTasksCommand with the specified task list.
+     *
+     * @param taskList The task list to list tasks from.
+     */
     public ListTasksCommand(TaskList taskList) {
         this.taskList = taskList;
     }

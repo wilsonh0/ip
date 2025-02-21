@@ -6,6 +6,11 @@ package oogway.logic.commands;
 public class IncorrectCommand extends Command {
     private final String message;
 
+    /**
+     * Initializes a new IncorrectCommand with the specified message.
+     *
+     * @param message The message to display to the user.
+     */
     public IncorrectCommand(String message) {
         this.message = message;
     }

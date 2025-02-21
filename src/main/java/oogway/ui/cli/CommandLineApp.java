@@ -36,6 +36,9 @@ public class CommandLineApp {
 
     /**
      * Runs the command loop until the exit command is given.
+     *
+     * Reused with modifications from AddressBook Level 2's `runCommandLoopUntilExitCommand()`
+     * https://github.com/se-edu/addressbook-level2/blob/master/src/seedu/addressbook/Main.java
      */
     private void runCommandLoopUntilExitCommand() {
         Scanner sc = new Scanner(System.in);
