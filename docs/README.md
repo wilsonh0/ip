@@ -7,7 +7,20 @@ It offers both a **command-line interface (CLI)** and a **graphical user interfa
 making task management simple and intuitive.
 
 ---
+# **Getting Started with Oogway**
 
+### **Running Oogway**
+Oogway supports both a **Graphical User Interface (GUI)** and a **Command-Line Interface (CLI)**.
+
+- To run Oogway with the **GUI**, simply execute:
+  ```
+  java -jar oogway.jar
+  ```
+- To run Oogway in **CLI mode**, use:
+  ```
+  java -jar oogway.jar cli
+  ```
+---
 ## **Features**
 
 ### **Adding Tasks**
