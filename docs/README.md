@@ -114,30 +114,17 @@ delete 3
   bye
   ```
 
-# **Oogway Command Summary**
+## **Oogway Command Summary**
 
-### **General Commands**
 | Command | Description |
 |---------|-------------|
 | `help` | Displays a list of available commands. |
 | `bye` | Exits the application. |
-
-### **Viewing Tasks**
-| Command | Description |
-|---------|-------------|
 | `list` | Lists all tasks currently stored. |
 | `find <keyword>` | Searches for tasks containing the specified keyword. |
-
-### **Adding Tasks**
-| Command | Description |
-|---------|-------------|
 | `todo <description>` | Adds a to-do task. |
 | `deadline <description> /by <yyyy-MM-dd HHmm>` | Adds a task with a deadline. |
 | `event <description> /from <yyyy-MM-dd HHmm> /to <HHmm>` | Adds an event with a specific time range. |
-
-### **Modifying Tasks**
-| Command | Description |
-|---------|-------------|
 | `mark <index>` | Marks a task as completed. |
 | `unmark <index>` | Marks a task as incomplete. |
 | `delete <index>` | Removes a task from the list. |
