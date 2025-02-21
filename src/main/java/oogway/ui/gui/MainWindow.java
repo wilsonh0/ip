@@ -17,6 +17,8 @@ import oogway.logic.commands.ExitCommand;
 
 /**
  * Controller for the main GUI.
+ *
+ * Adapted from https://github.com/se-edu/javafx-tutorial
  */
 public class MainWindow extends AnchorPane {
 

@@ -16,6 +16,10 @@ import oogway.storage.TaskList;
 
 /**
  * Parses user input and returns the corresponding command object.
+ *
+ * Inspired by AddressBook Level 2's Parser design:
+ * https://github.com/se-edu/addressbook-level2/blob/master/src/seedu/addressbook/parser/Parser.java
+ * This implementation differs in structure, regex usage, and task-specific commands.
  */
 public class Parser {
     private static final String DESC = "(?<description>[^/]+)";
