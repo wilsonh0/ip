@@ -69,7 +69,7 @@ public class MainWindow extends AnchorPane {
 
         // Check if the command is an exit command
         if (ExitCommand.isExit(command)) {
-            exitMessage(result.getMessage());
+            exitMessage(input, result.getMessage());
             return;
         }
 
@@ -91,8 +91,9 @@ public class MainWindow extends AnchorPane {
     /**
      * Displays the exit message from Oogway.
      */
-    private void exitMessage(String message) {
-        dialogContainer.getChildren().add(
+    private void exitMessage(String input, String message) {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(input, userImage),
                 DialogBox.getOogwayDialog(message, oogwayImage)
         );
         userInput.clear();
