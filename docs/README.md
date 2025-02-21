@@ -113,12 +113,6 @@ delete 3
   ```
   bye
   ```
-  
-
-### **Command Summary**
-Here’s a **concise command summary** for Oogway, formatted for quick reference:
-
----
 
 # **Oogway Command Summary**
 
