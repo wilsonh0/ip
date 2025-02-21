@@ -47,13 +47,18 @@ public class Storage {
 
             this.filePath = saveDirectory.resolve("save.txt");
         } else {
-            this.filePath = Paths.get(customFilePath);
+            this.filePath = Paths.get(customFilePath).normalize();
+
+            // Check if the file path is a directory
+            if (Files.exists(this.filePath) && Files.isDirectory(this.filePath)) {
+                throw new IOException("File path is a directory.");
+            }
 
             // Create parent directories if they do not exist
-            if (!Files.exists(this.filePath.getParent())) {
-                Files.createDirectories(this.filePath.getParent());
+            Path parentDirectory = this.filePath.getParent();
+            if (parentDirectory != null && !Files.exists(parentDirectory)) {
+                Files.createDirectories(parentDirectory);
             }
-            Files.createFile(this.filePath);
         }
 
         // Ensure the save file exists
